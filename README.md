@@ -1,1 +1,3 @@
-# gachagame
+```sh
+cargo sqlx migrate run
+```

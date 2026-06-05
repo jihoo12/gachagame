@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 괴짜 학도와 신화의 세계 - 소환실</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .btn-logout-nav {
+            position: fixed;
+            top: 16px;
+            right: 20px;
+            font-size: .78rem;
+            color: #64748b;
+            background: transparent;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 5px 13px;
+            cursor: pointer;
+            transition: color .2s, border-color .2s, background .2s;
+            font-family: inherit;
+            z-index: 100;
+        }
+        .btn-logout-nav:hover {
+            color: #e2e8f0;
+            border-color: #ef4444;
+            background: rgba(239,68,68,.08);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link nav-link-fixed">← 로비</a>
+    <button class="btn-logout-nav" onclick="logout()">로그아웃</button>
+
+    <h1 class="grad-text">💡 괴짜 학도와 신화의 세계</h1>
+    <div class="subtitle">전공에 미친 소녀들과 우주적 존재들을 소환하세요!</div>
+
+    <div class="dashboard">
+        <div class="stat-box nickname-wrap">
+            소환사:&nbsp;
+            <span class="nickname-display" id="nickname-display" title="클릭하여 닉네임 변경">로딩중</span>
+            <input class="nickname-input" id="nickname-input" maxlength="20" placeholder="닉네임 입력">
+        </div>
+        <div class="stat-box">누적 뽑기: <strong id="total-count">-</strong>회</div>
+        <div class="stat-box">도감: <strong id="unlocked-count">-</strong>종 획득</div>
+        <div class="stat-box">💰 골드: <strong id="gold-count">-</strong></div>
+        <div class="btn-group">
+            <button id="btn-draw-1"  disabled>로딩 중...</button>
+            <button id="btn-draw-10" class="btn-10" disabled>로딩 중...</button>
+        </div>
+    </div>
+
+    <div class="result-wrapper" id="result-wrapper">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            서버에 연결하는 중입니다...
+        </div>
+    </div>
+
+    <div class="image-modal" id="image-modal">
+        <span class="modal-close" id="modal-close-btn">&#x2715;</span>
+        <img class="modal-image" id="modal-img" src="" alt="확대 이미지">
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="utils.js"></script>
+    <script src="gacha.js"></script>
+    <script>requireAuth();</script>
+</body>
+</html>

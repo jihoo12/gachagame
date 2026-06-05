@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="괴짜 학도와 신화의 세계 — 소환 가능한 모든 존재들의 학술 도감">
+    <title>학술 도감 · Archive</title>
+    <link rel="stylesheet" href="archive.css">
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+    <!-- 배경 레이어 -->
+    <div class="bg-layer">
+        <div class="bg-stars"></div>
+        <div class="bg-glow"></div>
+    </div>
+
+    <!-- ── 헤더 ───────────────────────────────────────────────────────────────── -->
+    <header class="site-header">
+        <div class="header-left">
+            <div class="header-brand">
+                <div class="header-icon" aria-hidden="true">📚</div>
+                <span class="header-title">학술 도감 · Archive</span>
+            </div>
+            <div class="header-divider" aria-hidden="true"></div>
+            <span class="header-me" id="header-me" aria-live="polite"></span>
+        </div>
+
+        <a href="index.html" class="btn-back">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            로비로 돌아가기
+        </a>
+        <button class="btn-back" onclick="logout()"
+            style="margin-left:8px;cursor:pointer;background:none;border:1px solid #1a2740;font-family:inherit;"
+            aria-label="로그아웃">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+            로그아웃
+        </button>
+    </header>
+
+    <!-- ── 메인 ───────────────────────────────────────────────────────────────── -->
+    <main>
+
+        <!-- 타이틀 -->
+        <div class="page-title">
+            <p class="page-title-deco">✦ Mythic Archive ✦</p>
+            <h2>학술 도감</h2>
+            <p>소환 가능한 모든 존재들의 기록</p>
+            <div class="title-ornament" aria-hidden="true">
+                <div class="ornament-line"></div>
+                <div class="ornament-diamond"></div>
+                <div class="ornament-line right"></div>
+            </div>
+        </div>
+
+        <!-- 통계 -->
+        <div class="stats-bar" role="region" aria-label="도감 통계">
+            <div class="stat-chip">
+                <div class="dot dot-all" aria-hidden="true"></div>
+                전체 <span class="chip-count" id="stat-all">—</span>명
+                <span class="chip-sub" id="stat-unlocked-label"></span>
+            </div>
+            <div class="stat-chip">
+                <div class="dot dot-common" aria-hidden="true"></div>
+                COMMON <span class="chip-count" id="stat-common">—</span>
+            </div>
+            <div class="stat-chip">
+                <div class="dot dot-rare" aria-hidden="true"></div>
+                RARE <span class="chip-count" id="stat-rare">—</span>
+            </div>
+            <div class="stat-chip">
+                <div class="dot dot-ssr" aria-hidden="true"></div>
+                SSR <span class="chip-count" id="stat-ssr">—</span>
+            </div>
+            <div class="stat-chip">
+                <div class="dot dot-ur" aria-hidden="true"></div>
+                UR <span class="chip-count" id="stat-ur">—</span>
+            </div>
+        </div>
+
+        <!-- 툴바 -->
+        <div class="toolbar" role="toolbar" aria-label="필터 및 검색">
+            <!-- 검색 -->
+            <div class="search-wrap">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input type="search" id="search-input" placeholder="이름 또는 설명으로 검색… (/ 단축키)" aria-label="캐릭터 검색"
+                    autocomplete="off">
+            </div>
+
+            <!-- 등급 필터 -->
+            <div class="filter-group" role="group" aria-label="등급 필터">
+                <button class="filter-btn active" data-grade="ALL" aria-pressed="true">전체</button>
+                <button class="filter-btn" data-grade="COMMON" aria-pressed="false">COMMON</button>
+                <button class="filter-btn" data-grade="RARE" aria-pressed="false">RARE</button>
+                <button class="filter-btn" data-grade="SSR" aria-pressed="false">SSR</button>
+                <button class="filter-btn" data-grade="UR" aria-pressed="false">UR</button>
+            </div>
+
+            <!-- 미획득 필터 -->
+            <button class="filter-lock" id="filter-lock-btn" aria-pressed="false" title="미획득 캐릭터만 보기">
+                🔒 미획득만
+            </button>
+        </div>
+
+        <!-- 카드 그리드 -->
+        <div class="card-grid" id="card-grid" role="list" aria-label="캐릭터 목록">
+            <div class="state-box" role="status" aria-live="polite">
+                <div class="spinner" aria-hidden="true"></div>
+                도감을 불러오는 중입니다…
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ── 상세 모달 ────────────────────────────────────────────────────────────── -->
+    <div class="detail-overlay" id="detail-overlay" role="dialog" aria-modal="true" aria-labelledby="detail-name"
+        onclick="handleOverlayClick(event)">
+
+        <div class="detail-modal" id="detail-modal">
+
+            <!-- 닫기 버튼 -->
+            <button class="modal-close-btn" onclick="closeDetail()" aria-label="모달 닫기">✕</button>
+
+            <!-- 이미지 영역 (클릭 시 전체화면) -->
+            <div class="detail-image-wrap" id="detail-image-wrap" onclick="openLightbox()">
+                <img id="detail-img" src="" alt="">
+                <div class="img-zoom-hint" aria-hidden="true">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                    </svg>
+                    전체화면으로 보기
+                </div>
+                <div class="detail-grade-bar" id="detail-grade-bar"></div>
+            </div>
+
+            <!-- 정보 영역 -->
+            <div class="detail-body">
+                <div class="detail-header">
+                    <h2 class="detail-name" id="detail-name"></h2>
+                    <div class="detail-badge" id="detail-badge"></div>
+                </div>
+                <hr class="detail-divider">
+                <div class="detail-content" id="detail-content"></div>
+                <div class="detail-drawn-at" id="detail-drawn-at"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── 라이트박스 (전체화면 이미지 뷰어) ───────────────────────────────────── -->
+    <div class="lightbox-overlay" id="lightbox-overlay" role="dialog" aria-modal="true" aria-label="전체화면 이미지"
+        onclick="handleLightboxClick(event)">
+
+        <div class="lightbox-img-wrap">
+            <img class="lightbox-img" id="lightbox-img" src="" alt="">
+        </div>
+
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="닫기">✕</button>
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="utils.js"></script>
+    <script src="archive.js" defer></script>
+    <script>requireAuth();</script>
+</body>
+
+</html>

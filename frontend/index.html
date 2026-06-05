@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 괴짜 학도와 신화의 세계 - 메인 로비</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* ── Lobby Container ── */
+        .lobby-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--surface2);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 2px solid #334155;
+            box-shadow:
+                0 20px 25px -5px rgba(0, 0, 0, .5),
+                0 0 40px rgba(168, 85, 247, .15);
+            text-align: center;
+            animation: fadeIn .8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .lobby-title {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* ── Intro Box ── */
+        .intro-box {
+            background: #111827;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 35px;
+            border-left: 4px solid var(--c-ssr);
+            text-align: left;
+        }
+
+        .intro-box p {
+            line-height: 1.6;
+            color: #cbd5e1;
+            font-size: .95rem;
+        }
+
+        .intro-box p + p { margin-top: 10px; }
+
+        .highlight { color: var(--c-ur); font-weight: bold; }
+
+        /* ── Button Group ── */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            display: block;
+            padding: 16px 32px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            background: var(--grad-primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, .4);
+            transition: transform .3s, box-shadow .3s, filter .3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, .6);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active { transform: translateY(-1px); }
+
+        .btn-secondary {
+            display: block;
+            padding: 14px 32px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #e2e8f0;
+            text-decoration: none;
+            background: transparent;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            transition: border-color .3s, color .3s, transform .3s, box-shadow .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, .08), rgba(168, 85, 247, .08));
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: #6366f1;
+            color: var(--text);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, .25);
+        }
+
+        .btn-secondary:hover::before { opacity: 1; }
+
+        /* ── Footer ── */
+        .footer {
+            margin-top: 25px;
+            font-size: .8rem;
+            color: #475569;
+        }
+
+        /* ── Auth Bar ── */
+        .auth-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 18px;
+            width: 100%;
+        }
+
+        .auth-user {
+            font-size: .82rem;
+            color: #94a3b8;
+        }
+
+        .auth-user strong { color: #fbbf24; }
+
+        .btn-logout {
+            font-size: .78rem;
+            color: #64748b;
+            background: transparent;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 5px 13px;
+            cursor: pointer;
+            transition: color .2s, border-color .2s, background .2s;
+            font-family: inherit;
+        }
+
+        .btn-logout:hover {
+            color: #e2e8f0;
+            border-color: #ef4444;
+            background: rgba(239,68,68,.08);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lobby-container">
+        <!-- 인증 바 -->
+        <div class="auth-bar">
+            <span class="auth-user" id="auth-user-info"></span>
+            <button class="btn-logout" onclick="logout()">로그아웃</button>
+        </div>
+
+        <h1 class="lobby-title grad-text">💡 괴짜 학도와 신화의 세계</h1>
+        <div class="subtitle">Main Lobby</div>
+
+        <div class="intro-box">
+            <p>🌌 <span class="highlight">현실의 학문</span>과 <span class="highlight">우주적 존재</span>들이 뒤엉킨 기묘한 소환의 문이 열렸습니다.</p>
+            <p>자신의 전공에 미쳐버린 천재 소녀들과, 시공간 저편에 숨어있는 신화 속 존재들을 학술원 안으로 소환해 내세요.</p>
+            <p>준비가 되셨다면 아래의 차원 도약 장치를 가동하십시오.</p>
+        </div>
+
+        <div class="btn-group">
+            <a href="gacha.html" class="btn-primary">🌌 소환실(Gacha) 입장하기</a>
+            <a href="archive.html" class="btn-secondary">📚 학술 도감(Archive) 열기</a>
+        </div>
+
+        <div class="footer">&copy; 2026 괴짜 학도 학술위원회. All Rights Reserved.</div>
+    </div>
+
+</body>
+</html>
+<!-- auth init: 미로그인 시 login.html 로, 로그인 시 닉네임 표시 -->
+<script>
+(async () => {
+    const me = await requireAuth();
+    const info = document.getElementById('auth-user-info');
+    if (info && me) {
+        info.innerHTML = `<strong>${escHtml(me.nickname)}</strong> 님 · 뽑기 ${me.total_draws}회`;
+    }
+
+    function escHtml(s) {
+        return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+})();
+</script>

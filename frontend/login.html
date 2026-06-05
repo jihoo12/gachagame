@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 괴짜 학도와 신화의 세계 - 로그인</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap">
+    <style>
+        /* ── 변수 & 리셋 ─────────────────────────────────────────── */
+        :root {
+            --bg:        #07090f;
+            --surface:   #0e1420;
+            --surface2:  #161f30;
+            --surface3:  #1c2840;
+            --border:    #1a2740;
+            --border2:   #243455;
+            --text:      #e8edf7;
+            --text-soft: #a8b4cc;
+            --muted:     #4e6080;
+
+            --c-common:  #8da8c2;
+            --c-rare:    #38bdf8;
+            --c-ssr:     #c084fc;
+            --c-ur:      #fbbf24;
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: .22s cubic-bezier(.4,0,.2,1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Serif KR', Georgia, serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── 배경 ────────────────────────────────────────────────── */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-stars {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 23% 58%, rgba(255,255,255,.28) 0%, transparent 100%),
+                radial-gradient(1px 1px at 41% 28%, rgba(255,255,255,.35) 0%, transparent 100%),
+                radial-gradient(1px 1px at 67% 77%, rgba(255,255,255,.22) 0%, transparent 100%),
+                radial-gradient(1px 1px at 82% 14%, rgba(255,255,255,.32) 0%, transparent 100%),
+                radial-gradient(1px 1px at 91% 43%, rgba(255,255,255,.25) 0%, transparent 100%),
+                radial-gradient(1px 1px at 54% 91%, rgba(255,255,255,.3)  0%, transparent 100%),
+                radial-gradient(1px 1px at 35% 72%, rgba(255,255,255,.2)  0%, transparent 100%);
+        }
+
+        .bg-glow {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(700px 700px at 15% 20%,  rgba(56,189,248,.05)  0%, transparent 70%),
+                radial-gradient(500px 500px at 85% 75%,  rgba(168,85,247,.06)  0%, transparent 70%),
+                radial-gradient(400px 400px at 50% 110%, rgba(251,191,36,.04)  0%, transparent 70%);
+        }
+
+        /* ── 카드 ────────────────────────────────────────────────── */
+        .login-wrap {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 16px;
+            animation: fadeUp .6s cubic-bezier(.34,1.4,.64,1) both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px) scale(.97); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-lg);
+            padding: 40px 36px 36px;
+            box-shadow:
+                0 32px 64px rgba(0,0,0,.6),
+                0 0 0 1px rgba(255,255,255,.03),
+                inset 0 1px 0 rgba(255,255,255,.05);
+        }
+
+        /* ── 브랜드 헤더 ─────────────────────────────────────────── */
+        .brand {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #1e3a5f, #2d1b69);
+            border: 1px solid var(--border2);
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+            box-shadow: 0 0 24px rgba(168,85,247,.2);
+        }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            background: linear-gradient(90deg, #7dd3fc, #c084fc, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .brand-sub {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .75rem;
+            color: var(--muted);
+            letter-spacing: .04em;
+        }
+
+        /* ── 탭 ──────────────────────────────────────────────────── */
+        .tab-bar {
+            display: flex;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            margin-bottom: 28px;
+            gap: 3px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 9px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .82rem;
+            font-weight: 500;
+            color: var(--muted);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: color var(--transition), background var(--transition);
+            letter-spacing: .03em;
+        }
+
+        .tab-btn.active {
+            background: var(--surface3);
+            color: var(--text);
+            box-shadow: 0 1px 3px rgba(0,0,0,.4);
+        }
+
+        .tab-btn:hover:not(.active) { color: var(--text-soft); }
+
+        /* ── 폼 ──────────────────────────────────────────────────── */
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--text-soft);
+            margin-bottom: 7px;
+            letter-spacing: .04em;
+        }
+
+        .field input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        }
+
+        .field input:focus {
+            border-color: #7c3aed;
+            background: var(--surface3);
+            box-shadow: 0 0 0 3px rgba(124,58,237,.14);
+        }
+
+        .field input::placeholder { color: var(--muted); }
+
+        /* 비밀번호 토글 래퍼 */
+        .pw-wrap {
+            position: relative;
+        }
+
+        .pw-wrap input { padding-right: 44px; }
+
+        .pw-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: .9rem;
+            padding: 4px;
+            line-height: 1;
+            transition: color var(--transition);
+        }
+
+        .pw-toggle:hover { color: var(--text-soft); }
+
+        /* ── 제출 버튼 ───────────────────────────────────────────── */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .9rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #6d28d9, #a855f7, #6366f1);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            letter-spacing: .04em;
+            transition: filter var(--transition), transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 4px 16px rgba(168,85,247,.3);
+            margin-top: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.12), transparent);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .btn-submit:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(168,85,247,.45); }
+        .btn-submit:hover::before { opacity: 1; }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit:disabled { background: var(--surface3); color: var(--muted); cursor: not-allowed; filter: none; transform: none; box-shadow: none; }
+
+        /* 버튼 내부 스피너 */
+        .btn-submit .btn-spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .btn-submit.loading .btn-spinner { display: inline-block; }
+        .btn-submit.loading .btn-text { opacity: .7; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── 알림 메시지 ─────────────────────────────────────────── */
+        .msg-box {
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .8rem;
+            margin-bottom: 16px;
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            animation: msgIn .2s ease-out;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .msg-box.show { display: flex; }
+
+        .msg-box.error {
+            background: rgba(127,29,29,.35);
+            border: 1px solid rgba(239,68,68,.3);
+            color: #fca5a5;
+        }
+
+        .msg-box.success {
+            background: rgba(6,78,59,.3);
+            border: 1px solid rgba(52,211,153,.3);
+            color: #6ee7b7;
+        }
+
+        .msg-icon { flex-shrink: 0; }
+
+        /* ── 구분선 ──────────────────────────────────────────────── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider-text {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .72rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ── 힌트 텍스트 ─────────────────────────────────────────── */
+        .hint-text {
+            text-align: center;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: .76rem;
+            color: var(--muted);
+            margin-top: 20px;
+            line-height: 1.7;
+        }
+
+        /* ── 장식 오너먼트 ───────────────────────────────────────── */
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 20px 0 28px;
+        }
+
+        .ornament-line {
+            height: 1px;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, var(--border2));
+        }
+
+        .ornament-line.r { background: linear-gradient(90deg, var(--border2), transparent); }
+
+        .ornament-diamond {
+            width: 5px;
+            height: 5px;
+            background: var(--c-ssr);
+            transform: rotate(45deg);
+            box-shadow: 0 0 7px rgba(192,132,252,.6);
+        }
+
+        /* ── 스크롤바 ─────────────────────────────────────────────── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<!-- 배경 -->
+<div class="bg-layer">
+    <div class="bg-stars"></div>
+    <div class="bg-glow"></div>
+</div>
+
+<!-- 로그인 카드 -->
+<div class="login-wrap">
+    <div class="login-card">
+
+        <!-- 브랜드 -->
+        <div class="brand">
+            <div class="brand-icon">💡</div>
+            <span class="brand-title">괴짜 학도와 신화의 세계</span>
+            <span class="brand-sub">Mythic Scholar · 학술원 차원 도약 장치</span>
+        </div>
+
+        <div class="ornament">
+            <div class="ornament-line"></div>
+            <div class="ornament-diamond"></div>
+            <div class="ornament-line r"></div>
+        </div>
+
+        <!-- 탭 -->
+        <div class="tab-bar" role="tablist">
+            <button class="tab-btn active"
+                    id="tab-login"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="panel-login"
+                    onclick="switchTab('login')">로그인</button>
+            <button class="tab-btn"
+                    id="tab-register"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-register"
+                    onclick="switchTab('register')">회원가입</button>
+        </div>
+
+        <!-- ── 로그인 패널 ── -->
+        <div class="form-panel active" id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+            <div class="msg-box" id="login-msg" role="alert"></div>
+
+            <div class="field">
+                <label for="login-id">아이디</label>
+                <input type="text"
+                       id="login-id"
+                       placeholder="아이디를 입력하세요"
+                       autocomplete="username"
+                       maxlength="30">
+            </div>
+
+            <div class="field">
+                <label for="login-pw">비밀번호</label>
+                <div class="pw-wrap">
+                    <input type="password"
+                           id="login-pw"
+                           placeholder="비밀번호를 입력하세요"
+                           autocomplete="current-password"
+                           maxlength="64">
+                    <button class="pw-toggle" onclick="togglePw('login-pw', this)" aria-label="비밀번호 표시 전환" type="button">👁</button>
+                </div>
+            </div>
+
+            <button class="btn-submit" id="btn-login" onclick="doLogin()">
+                <span class="btn-spinner" aria-hidden="true"></span>
+                <span class="btn-text">로그인 · 차원 도약</span>
+            </button>
+        </div>
+
+        <!-- ── 회원가입 패널 ── -->
+        <div class="form-panel" id="panel-register" role="tabpanel" aria-labelledby="tab-register">
+            <div class="msg-box" id="register-msg" role="alert"></div>
+
+            <div class="field">
+                <label for="reg-id">아이디 <span style="color:var(--muted);font-size:.7rem">(4–20자, 영문·숫자·_)</span></label>
+                <input type="text"
+                       id="reg-id"
+                       placeholder="아이디를 입력하세요"
+                       autocomplete="username"
+                       maxlength="20">
+            </div>
+
+            <div class="field">
+                <label for="reg-nickname">닉네임 <span style="color:var(--muted);font-size:.7rem">(최대 20자)</span></label>
+                <input type="text"
+                       id="reg-nickname"
+                       placeholder="소환사 호칭을 정해주세요"
+                       autocomplete="nickname"
+                       maxlength="20">
+            </div>
+
+            <div class="field">
+                <label for="reg-pw">비밀번호 <span style="color:var(--muted);font-size:.7rem">(6자 이상)</span></label>
+                <div class="pw-wrap">
+                    <input type="password"
+                           id="reg-pw"
+                           placeholder="비밀번호를 입력하세요"
+                           autocomplete="new-password"
+                           maxlength="64">
+                    <button class="pw-toggle" onclick="togglePw('reg-pw', this)" aria-label="비밀번호 표시 전환" type="button">👁</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="reg-pw2">비밀번호 확인</label>
+                <div class="pw-wrap">
+                    <input type="password"
+                           id="reg-pw2"
+                           placeholder="비밀번호를 한 번 더 입력하세요"
+                           autocomplete="new-password"
+                           maxlength="64">
+                    <button class="pw-toggle" onclick="togglePw('reg-pw2', this)" aria-label="비밀번호 확인 표시 전환" type="button">👁</button>
+                </div>
+            </div>
+
+            <button class="btn-submit" id="btn-register" onclick="doRegister()">
+                <span class="btn-spinner" aria-hidden="true"></span>
+                <span class="btn-text">회원가입 · 학술원 등록</span>
+            </button>
+        </div>
+
+        <p class="hint-text">
+            🌌 학술원에 등록된 소환사만이<br>차원의 문을 열 수 있습니다.
+        </p>
+    </div>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:3000';
+
+    /* ── 이미 로그인 중이면 로비로 이동 ── */
+    (async () => {
+        try {
+            const res = await fetch(`${API_BASE}/me`, { credentials: 'include', signal: AbortSignal.timeout(3000) });
+            if (res.ok) location.replace('index.html');
+        } catch { /* 미연결 상태 무시 */ }
+    })();
+
+    /* ── 탭 전환 ── */
+    function switchTab(tab) {
+        ['login', 'register'].forEach(t => {
+            document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+            document.getElementById(`tab-${t}`).setAttribute('aria-selected', t === tab);
+            document.getElementById(`panel-${t}`).classList.toggle('active', t === tab);
+        });
+        hideMsg('login-msg');
+        hideMsg('register-msg');
+    }
+
+    /* ── 비밀번호 토글 ── */
+    function togglePw(inputId, btn) {
+        const inp = document.getElementById(inputId);
+        const isText = inp.type === 'text';
+        inp.type = isText ? 'password' : 'text';
+        btn.textContent = isText ? '👁' : '🙈';
+    }
+
+    /* ── 메시지 표시/숨김 ── */
+    function showMsg(id, text, type) {
+        const el = document.getElementById(id);
+        el.className = `msg-box show ${type}`;
+        el.innerHTML = `<span class="msg-icon">${type === 'error' ? '⚠️' : '✅'}</span><span>${escHtml(text)}</span>`;
+    }
+
+    function hideMsg(id) {
+        const el = document.getElementById(id);
+        el.className = 'msg-box';
+    }
+
+    /* ── 버튼 로딩 상태 ── */
+    function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        btn.disabled = loading;
+        btn.classList.toggle('loading', loading);
+    }
+
+    /* ── 로그인 ── */
+    async function doLogin() {
+        const username = document.getElementById('login-id').value.trim();
+        const password = document.getElementById('login-pw').value;
+
+        if (!username || !password) {
+            showMsg('login-msg', '아이디와 비밀번호를 모두 입력해주세요.', 'error');
+            return;
+        }
+
+        setLoading('btn-login', true);
+        hideMsg('login-msg');
+
+        try {
+            const res = await fetch(`${API_BASE}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username, password }),
+                signal: AbortSignal.timeout(8000),
+            });
+
+            if (!res.ok) {
+                const body = await res.text().catch(() => '');
+                const msg = body || `로그인에 실패했습니다. (${res.status})`;
+                showMsg('login-msg', msg, 'error');
+                return;
+            }
+
+            // 성공 → 로비로
+            showMsg('login-msg', '로그인 성공! 잠시 후 이동합니다…', 'success');
+            setTimeout(() => location.href = 'index.html', 700);
+
+        } catch (err) {
+            showMsg('login-msg',
+                err.name === 'TimeoutError'
+                    ? '서버 응답 시간이 초과됐습니다. 잠시 후 다시 시도해주세요.'
+                    : `서버에 연결할 수 없습니다: ${err.message}`,
+                'error');
+        } finally {
+            setLoading('btn-login', false);
+        }
+    }
+
+    /* ── 회원가입 ── */
+    async function doRegister() {
+        const username = document.getElementById('reg-id').value.trim();
+        const nickname = document.getElementById('reg-nickname').value.trim();
+        const password = document.getElementById('reg-pw').value;
+        const password2 = document.getElementById('reg-pw2').value;
+
+        // 클라이언트 유효성 검사
+        if (!username || !nickname || !password || !password2) {
+            showMsg('register-msg', '모든 항목을 입력해주세요.', 'error');
+            return;
+        }
+        if (!/^[a-zA-Z0-9_]{4,20}$/.test(username)) {
+            showMsg('register-msg', '아이디는 4~20자 영문·숫자·_만 사용 가능합니다.', 'error');
+            return;
+        }
+        if (password.length < 6) {
+            showMsg('register-msg', '비밀번호는 6자 이상이어야 합니다.', 'error');
+            return;
+        }
+        if (password !== password2) {
+            showMsg('register-msg', '비밀번호가 일치하지 않습니다.', 'error');
+            return;
+        }
+
+        setLoading('btn-register', true);
+        hideMsg('register-msg');
+
+        try {
+            const res = await fetch(`${API_BASE}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username, nickname, password }),
+                signal: AbortSignal.timeout(8000),
+            });
+
+            if (!res.ok) {
+                const body = await res.text().catch(() => '');
+                const msg = body || `회원가입에 실패했습니다. (${res.status})`;
+                showMsg('register-msg', msg, 'error');
+                return;
+            }
+
+            // 성공 → 로그인 탭으로 안내
+            showMsg('register-msg', '학술원 등록 완료! 로그인 탭에서 로그인해주세요.', 'success');
+            document.getElementById('reg-id').value = '';
+            document.getElementById('reg-nickname').value = '';
+            document.getElementById('reg-pw').value = '';
+            document.getElementById('reg-pw2').value = '';
+            setTimeout(() => {
+                switchTab('login');
+                showMsg('login-msg', '회원가입이 완료됐습니다. 로그인하세요.', 'success');
+            }, 1200);
+
+        } catch (err) {
+            showMsg('register-msg',
+                err.name === 'TimeoutError'
+                    ? '서버 응답 시간이 초과됐습니다.'
+                    : `서버에 연결할 수 없습니다: ${err.message}`,
+                'error');
+        } finally {
+            setLoading('btn-register', false);
+        }
+    }
+
+    /* ── Enter 키 제출 ── */
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        const activePanel = document.querySelector('.form-panel.active');
+        if (!activePanel) return;
+        if (activePanel.id === 'panel-login')    doLogin();
+        if (activePanel.id === 'panel-register') doRegister();
+    });
+
+    /* ── XSS 이스케이프 ── */
+    function escHtml(s) {
+        return String(s ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+</script>
+</body>
+</html>

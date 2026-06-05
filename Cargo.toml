@@ -1,0 +1,25 @@
+[package]
+name    = "gacha_server"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "gacha_server"
+path = "src/main.rs"
+
+[dependencies]
+axum            = { version = "0.7", features = ["macros"] }
+tokio           = { version = "1",   features = ["full"] }
+tower-http      = { version = "0.5", features = ["cors", "fs"] }
+tower-sessions  = { version = "0.12", features = ["memory-store"] }
+sqlx            = { version = "0.7", features = ["sqlite", "runtime-tokio-native-tls", "migrate", "macros"] }
+serde           = { version = "1",   features = ["derive"] }
+serde_json      = "1"
+uuid            = { version = "1",   features = ["v4"] }
+rand            = "0.8"
+thiserror       = "1"
+tracing         = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# 비밀번호 해싱
+bcrypt          = "0.15"
